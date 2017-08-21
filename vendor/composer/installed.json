@@ -1,0 +1,41 @@
+[
+    {
+        "name": "r0mdau/jisly",
+        "version": "1.0.0",
+        "version_normalized": "1.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/r0mdau/jisly.git",
+            "reference": "c4079e785bb7d1b4db3a74925551f14645979fa9"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/r0mdau/jisly/zipball/c4079e785bb7d1b4db3a74925551f14645979fa9",
+            "reference": "c4079e785bb7d1b4db3a74925551f14645979fa9",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.4"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "^5.6"
+        },
+        "time": "2016-11-12T21:49:25+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Jisly\\": "src/"
+            },
+            "exclude-from-classmap": [
+                "/tests/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "Apache2.0"
+        ],
+        "description": "Light NoSQL database, JSON file data storing",
+        "homepage": "https://github.com/r0mdau/jisly"
+    }
+]
