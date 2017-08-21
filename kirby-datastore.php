@@ -29,6 +29,6 @@ $kirby->set('field', 'datastore', __DIR__ . '/fields/datastore');
  * site()->datastore('entries')
  */
 
-$kirby->set('site::method', kirby()->option('datastore.method', 'datastore'), function ($site, $collection = false) use ($database) {
+$kirby->set('site::method', c::get('datastore.method', 'datastore'), function ($site, $collection = false) use ($database) {
   return $collection ? $database->collection($collection) : $database;
 });
