@@ -1,6 +1,6 @@
 <?php
 
-require 'KirbyDatastore.class.php';
+require(__DIR__ . '/KirbyDatastore.class.php');
 
 /**
  * KirbyDatastore init
