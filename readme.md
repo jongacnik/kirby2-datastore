@@ -92,7 +92,6 @@ entries:
 ## Filter Data
 A custom filter can be applied to the data before it is put out as a json response. This is perfect if you need to modify some of the data for presentation, change columns, etc.
 
-### Example
 Create a simple plugin `site/plugins/mydatafilters/mydatafilters.php`:
 ```php
 <?php
@@ -104,6 +103,7 @@ class MyDataFilters {
   }
 }
 ```
+
 Update field definition:
 ```yaml
 people:
@@ -134,7 +134,6 @@ people:
   order: desc
 
 ```
-
 
 ## Why?
 
