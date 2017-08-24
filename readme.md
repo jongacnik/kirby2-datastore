@@ -89,6 +89,53 @@ entries:
   type: datastore
 ```
 
+## Filter Data
+A custom filter can be applied to the data before it is put out as a json response. This is perfect if you need to modify some of the data for presentation, change columns, etc.
+
+### Example
+Create a simple plugin `site/plugins/mydatafilters/mydatafilters.php`:
+```php
+<?php
+
+class MyDataFilters {
+  static function myfilterfunc($data) {
+    // filter data here
+    return $data;
+  }
+}
+```
+Update field definition:
+```yaml
+people:
+  label: People
+  type: datastore
+  collection: persons
+  filter: MyDataFilters::myfilterfunc
+  fields:
+    name:
+      label: Name
+      type: text
+    email:
+      label: Email
+      type: email
+    age:
+      label: Age
+      type: number
+    glasses:
+      label: Glasses
+      type: toggle
+  columns:
+    name: Name
+    email: Email
+    details:
+      label: Details
+      value: >
+        {{ age }}, {{ glasses }}
+  order: desc
+
+```
+
+
 ## Why?
 
 Sometimes I need to store large-ish quantities of data, think along the lines of 10,000+ entries with 10+ fields. With Kirby we have 2 built-in options:
