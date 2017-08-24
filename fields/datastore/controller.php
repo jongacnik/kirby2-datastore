@@ -119,7 +119,12 @@ class DatastoreFieldController extends Kirby\Panel\Controllers\Field {
   // get entries for the current table
   public function list () {
     $field = $this->field();
-    return response::json($field->database->collection($field->collection())->find());
+    $data = $field->database->collection($field->collection())->find();
+    $snippet = $field->snippet();
+    if($field->filter()) {
+      $data = call_user_func($field->filter(), $data);
+    } 
+    return response::json($data);
   }
 
   protected function structure($model) {
