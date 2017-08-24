@@ -120,7 +120,6 @@ class DatastoreFieldController extends Kirby\Panel\Controllers\Field {
   public function list () {
     $field = $this->field();
     $data = $field->database->collection($field->collection())->find();
-    $snippet = $field->snippet();
     if($field->filter()) {
       $data = call_user_func($field->filter(), $data);
     } 
