@@ -62,12 +62,14 @@ people:
       type: toggle
   columns:
     name: Name
-    email: Email
+    email: 
+      label: Email
+      class: emailcolumnclass
     details:
       label: Details
-      value: >
-        {{ age }}, {{ glasses }}
+      width: 20%
   order: desc
+  rows: 25
 
 ```
 
@@ -115,24 +117,9 @@ people:
     name:
       label: Name
       type: text
-    email:
-      label: Email
-      type: email
     age:
       label: Age
       type: number
-    glasses:
-      label: Glasses
-      type: toggle
-  columns:
-    name: Name
-    email: Email
-    details:
-      label: Details
-      value: >
-        {{ age }}, {{ glasses }}
-  order: desc
-
 ```
 
 ## Why?
@@ -144,6 +131,6 @@ Sometimes I need to store large-ish quantities of data, think along the lines of
 
 10,000 pages is a mess and quite slow, especially if you need to iterate over and filter that data. The advantage to the Kirby flat-file system is in a tree-based structure; 10,000 subfolders isn’t making the best use of that.
 
-10,000 structure entries initially feels more sane, but will be a nightmare to manage in the panel, and Kirby’s `yaml` or `toStructure` methods become quite slow (understandably) on this many entries, so iterating and filtering is also an issue here.
+10,000 structure entries initially feels more sane, but will be a nightmare to manage in the panel, and Kirby’s `yaml` or `toStructure` methods become quite slow on this many entries, so iterating and filtering is also an issue here.
 
 I needed a different way to store data, but wanted the solution to remain flat-file to not break with the Kirby ethos, and wanted the data modelable and editable via the panel.

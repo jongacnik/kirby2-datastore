@@ -1,12 +1,5 @@
 (function($) {
 
-  function tinyBars (str, data) {
-    var regex = /{{\s*([\w\.]+)\s*}}/gi
-    return str.replace(regex, function (match, val) {
-      return data[val.trim()] || ''
-    })
-  }
-
   var Datastore = function(el) {
 
     var element = $(el);
@@ -29,12 +22,8 @@
 
     table.append(tableHead(headers, $('<thead></thead>')))
     table.append(tableHead(headers, $('<tfoot></tfoot>')))
-
-    var colCount = Object.keys(columns).length
     
-    var defs =  [
-      { orderable: false, targets: [colCount, colCount + 1] }
-    ]
+    var defs = columnDefs()
 
     var table = table.DataTable({
       columnDefs: defs,
@@ -48,18 +37,11 @@
             var result = []
             
             Object.keys(columns).forEach(function (key) {
-              var item = columns[key]
-              if ($.isPlainObject(item)) {
-                if (item.value) {
-                  result.push(tinyBars(item.value, i))
-                } else if (item.date) {
-                  result.push(new Date(i[key] * 1000).format(item.date))
-                } else {
-                  result.push(i[key])
-                }
-              } else {
-                result.push(i[key])
-              }
+              var item = i[key]
+                ? i[key]
+                : ''
+
+              result.push(item)
             })
 
             return result.concat([editButton(i._rid), deleteButton(i._rid)])
@@ -106,6 +88,38 @@
       $row.append($('<th width="18"></th>'))
 
       return $element.append($row);
+    }
+
+    function columnDefs () {
+      // column defs handle custom column widths and classnames
+      var colCount = Object.keys(columns).length
+    
+      var defs = [
+        { orderable: false, targets: [colCount, colCount + 1] }
+      ]
+
+      Object.keys(columns).forEach(function (key, i) {
+        if (columns[key].width) {
+          defs.push({
+            width: columns[key].width,
+            targets: i
+          })
+        }
+        if (columns[key].class) {
+          defs.push({
+            className: columns[key].class,
+            targets: i
+          })
+        }
+        if ($.isPlainObject(columns[key]) && columns[key].hasOwnProperty('visible')) {
+          defs.push({
+            visible: columns[key].visible,
+            targets: i
+          })
+        }
+      })
+
+      return defs
     }
 
   };

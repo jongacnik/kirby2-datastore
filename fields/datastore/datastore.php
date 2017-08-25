@@ -5,7 +5,6 @@ class DatastoreField extends BaseField {
   static public $assets = array(
     'js' => array(
       'datatables.min.js',
-      'date.format.min.js',
       'datastore.js'
     ),
     'css' => array(
@@ -20,12 +19,8 @@ class DatastoreField extends BaseField {
   public $collection = null;
   public $rows = 10;
   public $order = 'asc';
-  public $entry = null;
-  public $structure = null;
   public $modalsize = 'medium';
   public $limit = null;
-  public $sort = null;
-  public $flip = false;
 
   public function __construct () {
     // connect to datastore db
@@ -66,57 +61,6 @@ class DatastoreField extends BaseField {
     return in_array($this->modalsize, $sizes) ? $this->modalsize : 'medium';
   }
 
-  public function sort () {
-    return $this->sort ? str::split($this->sort) : false;
-  }
-
-  public function flip () {
-    return $this->flip === true ? true : false;
-  }
-
-  public function structure () {
-    if(!is_null($this->structure)) {
-      return $this->structure;
-    } else {
-      $structure = $this->model->structure()->forField($this->name);
-
-      // add default items if the default value is being used
-      if(is_array($this->default()) && $this->value() === $this->default()) {
-        foreach($this->default() as $defaultItem) {
-          $structure->store()->add($defaultItem);
-        }
-      }
-
-      return $this->structure = $structure;
-    }
-  }
-
-  public function fields () {
-
-    $output = array();
-
-    // use the configured fields if available
-    $fieldData = $this->structure->fields();
-    $fields = $this->entry;
-    if(!is_array($fields)) {
-      // fall back to all existing fields
-      $fields = array_keys($fieldData);
-    }
-
-    foreach($fields as $f) {
-      if(!isset($fieldData[$f])) continue;
-      $v = $fieldData[$f];
-
-      $v['name']  = $f;
-      $v['value'] = '{{' . $f . '}}';
-
-      $output[] = $v;
-    }
-
-    return $output;
-
-  }
-
   // name of datastore collection specified by collection option, or field name
   public function collection () {
     return (isset($this->collection) && $this->collection) ? str::slug($this->collection) : $this->name;
@@ -129,82 +73,29 @@ class DatastoreField extends BaseField {
     }, $this->fields);
   }
 
-  public function entries () {
-    // get all entries from mongo-lite and convert to kirby structure
-    $entries = structure($this->database->collection($this->collection())->find());
-
-    if ($sort = $this->sort()) {
-      $entries = call([$entries, 'sortBy'], $sort);
-    }
-
-    if ($this->flip()) {
-      $entries = $entries->flip();
-    }
-
-    return $entries;
-  }
-
   public function result () {
     return $this->collection();
-  }
-
-  public function entry ($data) {
-
-    if(is_null($this->entry) or !is_string($this->entry)) {
-      $html = array();
-      foreach($this->fields as $name => $field) {
-        if(isset($data->$name)) {
-          $html[] = $data->$name;          
-        }
-      }
-      return implode('<br>', $html);
-    } else {
-    
-      $text = $this->entry;
-
-      foreach((array)$data as $key => $value) {
-        if(is_array($value)) {
-          $value = implode(', ', array_values($value));
-        }
-        $text = str_replace('{{' . $key . '}}', $value, $text);
-      }
-
-      return $text;
-    
-    }
-
   }
 
   public function label () {
     if(!$this->label) return null;
 
-    $label = new Brick('label');
-    $label->addClass('label');
-    $label->attr('for', $this->id());
+    $addurl = purl($this->model, 'field/' . $this->name . '/datastore/add');
 
-    $h2 = new Brick('h2');
-    $h2->addClass('hgroup hgroup-single-line hgroup-compressed cf');
-    $span = new Brick('span', $this->i18n($this->label));
-    $span->addClass('hgroup-title');
-
-    $h2->append($span);
-
-    // Edit/Add links if index of subpages
-    $wrap = new Brick('span');
-    $wrap->addClass('hgroup-options shiv shiv-dark shiv-left');
-
-    $add = new Brick('a');
-    $add->html('<i class="icon icon-left fa fa-plus-circle"></i>' . l('fields.structure.add'));
-    $add->addClass('structure-add-button label-option');
-    $add->data('modal', true);
-    $add->attr('href', purl($this->model, 'field/' . $this->name . '/datastore/add'));
-
-    $wrap->append($add);
-
-    $h2->append($wrap);
-    $label->append($h2);
-
-    return $label;
+    return <<<HTML
+      <label class="label" for="{$this->id()}">
+        <h2 class="hgroup hgroup-single-line hgroup-compressed cf">
+          <span class="hgroup-title">{$this->i18n($this->label)}</span>
+          <span class="hgroup-options shiv shiv-dark shiv-left">
+            <span class="hgroup-option-right">
+              <a href="{$addurl}" data-modal="true">
+                <i class="icon icon-left fa fa-plus-circle"></i><span>Add</span>
+              </a>
+            </span>
+          </span>
+        </h2>
+      </label>
+HTML;
   }
 
   public function content () {

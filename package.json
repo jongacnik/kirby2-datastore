@@ -1,12 +1,12 @@
 {
-   "name": "kirby-mongolite",
-   "description": "Kirby Schemaless SQLite DB and field",
+   "name": "kirby-datastore",
+   "description": "Kirby Schemaless datastore and field",
    "author": "Jon Gacnik <https://github.com/jongacnik>",
    "repository": {
       "type": "git",
-      "url": "https://github.com/jongacnik/kirby-mongolite"
+      "url": "https://github.com/jongacnik/kirby-datastore"
    },
-   "version": "0.0.0",
+   "version": "1.0.0",
    "type": "kirby-plugin",
    "license": "MIT"
 }
