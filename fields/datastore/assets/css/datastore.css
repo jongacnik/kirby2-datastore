@@ -113,3 +113,11 @@
 [data-field="datastore"] .dataTable .btn:hover {
   color: #8dae28;
 }
+
+[data-field="datastore"] td.no-padding-cell {
+  padding: 0;
+}
+
+[data-field="datastore"] td.center-cell {
+  text-align: center;
+}
