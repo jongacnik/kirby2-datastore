@@ -68,6 +68,9 @@ people:
     details:
       label: Details
       width: 20%
+    glasses:
+      label: Glasses
+      sort: false
   order: desc
   rows: 25
 
