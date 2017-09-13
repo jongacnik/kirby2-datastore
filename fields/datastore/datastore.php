@@ -36,7 +36,7 @@ class DatastoreField extends BaseField {
       array(
         'pattern' => 'list',
         'method'  => 'get',
-        'action'  => 'list'
+        'action'  => 'listentries'
       ),
       array(
         'pattern' => 'add',

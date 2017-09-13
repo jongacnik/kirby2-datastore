@@ -117,7 +117,7 @@ class DatastoreFieldController extends Kirby\Panel\Controllers\Field {
   }
 
   // get entries for the current table
-  public function list () {
+  public function listentries () {
     $field = $this->field();
     $data = $field->database->collection($field->collection())->find();
     if($field->filter()) {
